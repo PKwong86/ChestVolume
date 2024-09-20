@@ -35,53 +35,52 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
   # Load necessary packages
   library(plotly)
   library(geometry)
-
+  
   # Validate inputs
   if (!selected_segment %in% names(segments)) {
     stop("Selected segment not found in the segments list.")
   }
-
+  
   # Use the first timeframe if not specified
   if (is.null(timeframe)) {
     timeframe <- min(data$Timeframe, na.rm = TRUE)
   }
-
+  
   # Filter data for the specified timeframe
   data_time <- subset(data, Timeframe == timeframe)
-
+  
   # Identify markers in the selected segment
   selected_markers <- segments[[selected_segment]]
-
+  
   # Create a color vector for all markers
   data_time$Color <- marker_color
   data_time$Size <- point_size
-
+  
   # Highlight the selected segment markers
   data_time$Color[data_time$Marker %in% selected_markers] <- highlight_color
   data_time$Size[data_time$Marker %in% selected_markers] <- point_size * 1.5  # Make highlighted markers larger
-
+  
   # Create 3D scatter plot
-  plot <- plot_ly(data_time, x = ~X, y = ~Y, z = ~Z,
-                  type = 'scatter3d', mode = 'markers',
+  plot <- plot_ly(data_time, x = ~X, y = ~Y, z = ~Z, type = 'scatter3d', mode = 'markers',
                   marker = list(size = ~Size, color = ~Color),
                   text = ~paste('Marker:', Marker),
                   hoverinfo = 'text')
-
+  
   # Compute convex hull for the selected segment markers
   segment_data <- data_time[data_time$Marker %in% selected_markers, ]
   coords <- as.matrix(segment_data[, c("X", "Y", "Z")])
-
+  
   if (nrow(coords) >= 4) {
     # Compute the convex hull
     hull <- convhulln(coords, output.options = TRUE)
-
+    
     # Extract vertices and simplices
     vertices <- coords
     simplices <- hull$hull  # Indices of the vertices forming the convex hull faces
-
+    
     # Adjust indices for 0-based indexing in plotly
     simplices_zero_based <- simplices - 1
-
+    
     # Add convex hull mesh to the plot
     plot <- plot %>%
       add_trace(
@@ -93,15 +92,14 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
         k = simplices_zero_based[, 3],
         type = 'mesh3d',
         name = paste('Convex Hull -', selected_segment),
-        color = highlight_color,
+        facecolor = highlight_color,
         opacity = 0.5,
-        showlegend = FALSE,
-        inherit = FALSE  # Prevent inheritance of attributes
+        showlegend = FALSE
       )
   } else {
     warning("Not enough points to form a convex hull for the selected segment.")
   }
-
+  
   # Add layout settings
   plot <- plot %>%
     layout(
@@ -113,6 +111,6 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
       ),
       title = paste('3D Chest Markers at Timeframe', timeframe, '- Highlighted Segment:', selected_segment)
     )
-
+  
   return(plot)
 }

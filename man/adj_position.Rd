@@ -4,18 +4,27 @@
 \alias{adj_position}
 \title{Adjust Marker Positions Towards Center}
 \usage{
-adj_position(marker_coords, center_coords, distance = 1)
+adj_position(data, distance = 1)
 }
 \arguments{
-\item{marker_coords}{Numeric vector of length 3 representing the marker coordinates (X, Y, Z).}
-
-\item{center_coords}{Numeric vector of length 3 representing the center coordinates (X, Y, Z).}
+\item{data}{A data frame where each row represents a marker at a specific timeframe, with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.}
 
 \item{distance}{Numeric value indicating the distance to adjust towards the center (default is 1 cm).}
 }
 \value{
-A numeric vector of length 3 representing the adjusted marker coordinates.
+A data frame of the same dimensions as \code{data}, containing the adjusted marker coordinates.
 }
 \description{
-Adjusts the position of markers by moving them towards the center by a specified distance.
+Adjusts the positions of markers by moving them towards the average center position within each timeframe
+by a specified distance. This accounts for marker protrusion from the skin surface.
+}
+\details{
+The function calculates the average center position of all markers within each timeframe and moves each marker towards the center
+by the specified distance along the line connecting the marker to the center.
+}
+\examples{
+# Assume 'processed_data' is the data frame from process_marker_data
+adjusted_data <- adj_position(processed_data, distance = 1)
+head(adjusted_data)
+
 }
