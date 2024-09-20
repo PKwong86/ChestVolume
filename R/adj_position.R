@@ -1,44 +1,54 @@
 #' Adjust Marker Positions Towards Center
 #'
-#' Adjusts the positions of markers by moving them towards the average center position by a specified distance.
-#' This accounts for marker protrusion from the skin surface.
+#' Adjusts the positions of markers by moving them towards the average center position within each timeframe
+#' by a specified distance. This accounts for marker protrusion from the skin surface.
 #'
-#' @param markers_matrix A numeric matrix or data frame where each row represents a marker's coordinates (X, Y, Z).
+#' @param data A data frame where each row represents a marker at a specific timeframe, with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.
 #' @param distance Numeric value indicating the distance to adjust towards the center (default is 1 cm).
 #'
-#' @return A numeric matrix of the same dimensions as `markers_matrix`, containing the adjusted marker coordinates.
-#' @details The function calculates the average center position of all markers and moves each marker towards the center
+#' @return A data frame of the same dimensions as `data`, containing the adjusted marker coordinates.
+#' @details The function calculates the average center position of all markers within each timeframe and moves each marker towards the center
 #' by the specified distance along the line connecting the marker to the center.
-#'
 #' @examples
-#' # Original marker coordinates (3 markers)
-#' markers <- matrix(c(10, 15, 20,
-#'                     12, 18, 24,
-#'                     14, 21, 28), ncol = 3, byrow = TRUE)
-#' colnames(markers) <- c("X", "Y", "Z")
+#' # Assume 'processed_data' is the data frame from process_marker_data
+#' adjusted_data <- adj_position(processed_data, distance = 1)
+#' head(adjusted_data)
 #'
-#' # Adjust marker positions
-#' adjusted_markers <- adj_position(markers, distance = 1)
-#' print(adjusted_markers)
-#'
+#' @import dplyr
 #' @export
-adj_position <- function(markers_matrix, distance = 1) {
-  # Calculate the center (average position) of all markers
-  center_coords <- colMeans(markers_matrix)
+adj_position <- function(data, distance = 1) {
+  # Load necessary package
+  library(dplyr)
 
-  # Function to adjust a single marker
-  adjust_marker <- function(marker_coords) {
-    direction_vector <- center_coords - marker_coords
-    norm <- sqrt(sum(direction_vector ^ 2))
-    unit_vector <- direction_vector / norm
-    adjusted_coords <- marker_coords + distance * unit_vector
-    return(adjusted_coords)
-  }
+  # Adjust markers for each timeframe
+  adjusted_data <- data %>%
+    group_by(Timeframe) %>%
+    do({
+      markers_df <- .
+      # Calculate the center for this timeframe
+      center_coords <- colMeans(markers_df[, c("X", "Y", "Z")], na.rm = TRUE)
 
-  # Apply the adjustment to all markers
-  adjusted_markers <- t(apply(markers_matrix, 1, adjust_marker))
+      # Function to adjust a single marker
+      adjust_marker <- function(marker_coords) {
+        direction_vector <- center_coords - marker_coords
+        norm <- sqrt(sum(direction_vector ^ 2))
+        if (norm == 0) {
+          # If marker is at the center, no adjustment needed
+          return(marker_coords)
+        }
+        unit_vector <- direction_vector / norm
+        adjusted_coords <- marker_coords + distance * unit_vector
+        return(adjusted_coords)
+      }
 
-  # Ensure the adjusted markers have the same column names
-  colnames(adjusted_markers) <- colnames(markers_matrix)
-  return(adjusted_markers)
+      # Apply the adjustment to all markers
+      adjusted_coords <- t(apply(markers_df[, c("X", "Y", "Z")], 1, adjust_marker))
+
+      # Create a new data frame with adjusted coordinates
+      markers_df[, c("X", "Y", "Z")] <- adjusted_coords
+      markers_df
+    }) %>%
+    ungroup()
+
+  return(adjusted_data)
 }
