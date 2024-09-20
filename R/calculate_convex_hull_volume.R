@@ -1,118 +1,74 @@
-#' Plot 3D Chest Markers with Highlighted Segment and Convex Hull
+#' Calculate Segment Volumes Over Time
 #'
-#' Generates a 3D plot of chest markers with the selected segment highlighted,
-#' including the convex hull mesh of the selected segment.
+#' Calculates the volumes of specified segments over time using convex hulls.
 #'
-#' @param data A data frame containing adjusted marker coordinates, with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.
-#' Coordinates should be in consistent units (e.g., centimeters).
-#' @param segments A named list where each element is a character vector of marker names defining a segment.
-#' @param selected_segment A character string specifying the name of the segment to highlight.
-#' @param timeframe A numeric value indicating the timeframe to plot. If NULL, the first timeframe is used.
-#' @param point_size Numeric value specifying the size of the markers in the plot (default is 5).
-#' @param highlight_color Color to use for the highlighted segment markers and mesh (default is 'red').
-#' @param marker_color Color to use for the non-highlighted markers (default is 'blue').
-#' @return A `plotly` object representing the 3D plot.
-#' @details The function plots all markers at the specified timeframe, highlighting the markers in the selected segment
-#' and overlaying the convex hull mesh of the selected segment. The plot is interactive, allowing for rotation and zooming.
+#' @param data A data frame containing adjusted marker coordinates in centimeters, with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z'.
+#' @param segments A list of character vectors, each containing marker names defining a segment.
+#'
+#' @return A data frame with columns 'Timeframe', 'Segment', 'Volume'.
+#' @details Coordinates should be in centimeters to ensure correct volume units (cm³).
 #' @examples
-#' # Assume 'adjusted_data' is your data frame with adjusted marker positions
-#' # Define segments
+#' # Define segments (e.g., quadrants of the chest)
 #' segments <- list(
 #'   UL = c("M01", "M02", "M03", "M04"),
-#'   UR = c("M05", "M06", "M07", "M08"),
-#'   LL = c("M09", "M10", "M11", "M12"),
-#'   LR = c("M13", "M14", "M15", "M16")
+#'   UR = c("M05", "M06", "M07", "M08")
 #' )
-#' # Plot the 'UL' segment at timeframe 1
-#' plot <- plot_chest_3d(adjusted_data, segments, selected_segment = "UL", timeframe = 1)
-#' # Display the plot
-#' plot
-#' @import plotly
+#'
+#' # Assume 'adjusted_data' is the data frame with adjusted marker positions in cm
+#' volumes_df <- calculate_segment_volumes(adjusted_data, segments)
+#' head(volumes_df)
+#'
+#' @import dplyr
 #' @import geometry
 #' @export
-plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
-                          point_size = 5, highlight_color = 'red', marker_color = 'blue') {
+calculate_segment_volumes <- function(data, segments) {
   # Load necessary packages
-  library(plotly)
-  library(geometry)
+  library(dplyr)
 
-  # Validate inputs
-  if (!selected_segment %in% names(segments)) {
-    stop("Selected segment not found in the segments list.")
+  # Initialize a list to store volume data frames
+  volume_list <- list()
+
+  # Loop over each segment
+  for (segment_name in names(segments)) {
+    segment_markers <- segments[[segment_name]]
+
+    # Filter data for the markers in this segment
+    segment_data <- data %>%
+      filter(Marker %in% segment_markers)
+
+    # Calculate volumes for each timeframe
+    segment_volumes <- segment_data %>%
+      group_by(Timeframe) %>%
+      do({
+        df <- .
+        coords <- as.matrix(df[, c("X", "Y", "Z")])
+
+        # Handle cases where convex hull cannot be formed
+        if (nrow(coords) >= 4) {
+          hull <- geometry::convhulln(coords, options = "FA")
+          volume <- hull$vol
+        } else {
+          volume <- NA
+        }
+
+        data.frame(Volume = volume)
+      }) %>%
+      ungroup() %>%
+      mutate(Segment = segment_name)
+
+    # Append to the list
+    volume_list[[segment_name]] <- segment_volumes
   }
 
-  # Use the first timeframe if not specified
-  if (is.null(timeframe)) {
-    timeframe <- min(data$Timeframe, na.rm = TRUE)
-  }
+  # Combine all volume data frames
+  volumes_df <- bind_rows(volume_list)
 
-  # Filter data for the specified timeframe
-  data_time <- subset(data, Timeframe == timeframe)
+  # Reorder columns
+  volumes_df <- volumes_df[, c("Timeframe", "Segment", "Volume")]
 
-  # Identify markers in the selected segment
-  selected_markers <- segments[[selected_segment]]
+  # Arrange data
+  volumes_df <- volumes_df %>%
+    arrange(Timeframe, Segment)
 
-  # Create a color vector for all markers
-  data_time$Color <- marker_color
-  data_time$Size <- point_size
-
-  # Highlight the selected segment markers
-  data_time$Color[data_time$Marker %in% selected_markers] <- highlight_color
-  data_time$Size[data_time$Marker %in% selected_markers] <- point_size * 1.5  # Make highlighted markers larger
-
-  # Create 3D scatter plot
-  plot <- plot_ly(data_time, x = ~X, y = ~Y, z = ~Z,
-                  type = 'scatter3d', mode = 'markers',
-                  marker = list(size = ~Size, color = ~Color),
-                  text = ~paste('Marker:', Marker),
-                  hoverinfo = 'text')
-
-  # Compute convex hull for the selected segment markers
-  segment_data <- data_time[data_time$Marker %in% selected_markers, ]
-  coords <- as.matrix(segment_data[, c("X", "Y", "Z")])
-
-  if (nrow(coords) >= 4) {
-    # Compute the convex hull
-    hull <- convhulln(coords, output.options = TRUE)
-
-    # Extract vertices and simplices
-    vertices <- coords
-    simplices <- hull$hull  # Indices of the vertices forming the convex hull faces
-
-    # Adjust indices for 0-based indexing in plotly
-    simplices_zero_based <- simplices - 1
-
-    # Add convex hull mesh to the plot
-    plot <- plot %>%
-      add_trace(
-        x = vertices[, 1],
-        y = vertices[, 2],
-        z = vertices[, 3],
-        i = simplices_zero_based[, 1],
-        j = simplices_zero_based[, 2],
-        k = simplices_zero_based[, 3],
-        type = 'mesh3d',
-        name = paste('Convex Hull -', selected_segment),
-        color = highlight_color,
-        opacity = 0.5,
-        showlegend = FALSE,
-        inherit = FALSE  # Prevent inheritance of attributes
-      )
-  } else {
-    warning("Not enough points to form a convex hull for the selected segment.")
-  }
-
-  # Add layout settings
-  plot <- plot %>%
-    layout(
-      scene = list(
-        xaxis = list(title = 'X'),
-        yaxis = list(title = 'Y'),
-        zaxis = list(title = 'Z'),
-        camera = list(eye = list(x = 1.25, y = 1.25, z = 1.25))
-      ),
-      title = paste('3D Chest Markers at Timeframe', timeframe, '- Highlighted Segment:', selected_segment)
-    )
-
-  return(plot)
+  return(volumes_df)
 }
