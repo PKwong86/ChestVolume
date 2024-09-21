@@ -4,7 +4,7 @@
 #' It creates a line plot with each segment's volume on the y-axis and the timeframe on the x-axis.
 #'
 #' @param volume_data A data frame with volume measurements, one column per segment, and a "frame" column for time.
-#' @param segment_names A vector of names for each segment (must match the column names in volume_data).
+#' @param segment_names Column that contain name of segment to plot
 #' @param title Optional plot title.
 #' @return A ggplot object showing volume changes by segment over time.
 #' @import ggplot2
@@ -28,10 +28,6 @@ plot_2d_volume <- function(volume_data, segment_names = 'Segment', title = "Volu
     stop("The 'volume_data' must contain a 'Timeframe' column for time points.")
   }
 
-  # Ensure segment names match column names in volume_data
-  if (!all(segment_names %in% colnames(volume_data))) {
-    stop("All provided segment names must match column names in 'volume_data'.")
-  }
 
   # Create the ggplot
   ggplot(volume_data, aes(x = Timeframe, y = Volume, color = Segment)) +
