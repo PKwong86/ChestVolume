@@ -1,8 +1,8 @@
-# ChestVolumeAnalysis: An R Package for Analyzing Chest Expansion Using 3D Coordinate Data
+# ChestVolume: An R Package for Analyzing Chest Expansion Using 3D Coordinate Data
 
 ## Overview
 
-**ChestVolumeAnalysis** is an R package designed for analyzing chest expansion using 3D marker coordinate data collected from motion capture systems. The package allows users to process marker data, adjust marker positions, calculate convex hull volumes of chest segments, and visualize chest movements in both 2D and 3D.
+**ChestVolume** is an R package designed for analyzing chest expansion using 3D marker coordinate data collected from motion capture systems. The package allows users to process marker data, adjust marker positions, calculate convex hull volumes of chest segments, and visualize chest movements in both 2D and 3D.
 
 This tool is particularly useful for respiratory health research, enabling detailed assessments of chest expansion and identifying potential asymmetries in breathing patterns.
 
@@ -16,10 +16,17 @@ This tool is particularly useful for respiratory health research, enabling detai
 
 ## Installation
 
-To install **ChestVolumeAnalysis** from GitHub, use the following commands:
+To install **ChestVolume** from GitHub, use the following commands:
 
 ```r
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("YourUsername/ChestVolumeAnalysis")
+devtools::install_github("PKwong86/ChestVolumeAnalysis")
+```
+
+## Getting Started
+Here is a quick example demonstrating how to use ChestVolumeAnalysis to process 3D marker data, adjust marker positions, and calculate chest segment volumes.
+
+
+
