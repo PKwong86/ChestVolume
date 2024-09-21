@@ -1,3 +1,5 @@
+library(ChestVolume)
+
 data(sample_data)
 
 # Step 1: Process the marker data and convert from mm to cm
