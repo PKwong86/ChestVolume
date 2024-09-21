@@ -22,11 +22,35 @@ To install **ChestVolume** from GitHub, use the following commands:
 if (!requireNamespace("devtools", quietly = TRUE)) {
   install.packages("devtools")
 }
-devtools::install_github("PKwong86/ChestVolumeAnalysis")
+devtools::install_github("PKwong86/ChestVolume")
 ```
 
 ## Getting Started
-Here is a quick example demonstrating how to use ChestVolumeAnalysis to process 3D marker data, adjust marker positions, and calculate chest segment volumes.
+Here is a quick example demonstrating how to use ChestVolume to process 3D marker data, adjust marker positions, and calculate chest segment volumes.
 
+# Load the package
+library(ChestVolume)
 
+# Example sample input data 
+raw_data <- data(sample_data)
+
+# Step 1: Process the marker data and convert from mm to cm
+processed_data <- process_marker_data(raw_data, convert_to_cm = TRUE)
+
+# Step 2: Adjust the marker positions by moving them 1 cm toward the chest center
+adjusted_data <- adj_position(processed_data, distance = 1)
+
+# Step 3: Define the chest segments (example with one segment)
+segments <- list(
+  upper_left = c("M01", "M02", "M04", "M05","M07", "M08","M10", "M11")
+)
+
+# Step 4: Calculate the chest segment volumes
+volumes <- calculate_convex_hull_volume(adjusted_data, segments)
+
+# Step 5: Visualize the chest expansion in 3D
+plot_chest_3d(adjusted_data, segments)
+
+# Step 6: Plot the chest volume changes over time
+plot_volume_change_by_segment(volumes, segment_names = c("upper_left", "upper_right"))
 
