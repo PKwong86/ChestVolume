@@ -27,7 +27,7 @@ devtools::install_github("PKwong86/ChestVolume")
 
 ## Getting Started
 Here is a quick example demonstrating how to use ChestVolume to process 3D marker data, adjust marker positions, and calculate chest segment volumes.
-
+```r
 # Load the package
 library(ChestVolume)
 
@@ -53,4 +53,4 @@ plot_chest_3d(adjusted_data, segments)
 
 # Step 6: Plot the chest volume changes over time
 plot_volume_change_by_segment(volumes, segment_names = c("upper_left", "upper_right"))
-
+```
