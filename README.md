@@ -42,14 +42,16 @@ adjusted_data <- adj_position(processed_data, distance = 1)
 
 # Step 3: Define the chest segments (example with one segment)
 segments <- list(
-  upper_left = c("M01", "M02", "M04", "M05","M07", "M08","M10", "M11")
+  left = c("M01", "M02", "M03", "M04","M05", "M06","M07", "M08",
+  "M09", "M10", "M11","M12", "M13","M14", "M15","M16", "M17","M18")
 )
 
 # Step 4: Calculate the chest segment volumes
-calculate_volumns(adjusted_data, segments)
+volumes<- calculate_volumes(adjusted_data, segments)
+head(volumes)
 
 # Step 5: Visualize the chest expansion in 3D
-plot_chest_3d(adjusted_data, segments, selected_segment = 'upper_left')
+plot_chest_3d(adjusted_data, segments, selected_segment = 'left')
 
 # Step 6: Plot the chest volume changes over time
 plot_2d_volume(volumes, 'Segment')
