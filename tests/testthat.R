@@ -1,12 +1,21 @@
-# This file is part of the standard setup for testthat.
-# It is recommended that you do not modify it.
-#
-# Where should you do additional test configuration?
-# Learn more about the roles of various files in:
-# * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
-# * https://testthat.r-lib.org/articles/special-files.html
+data(sample_data)
 
-library(testthat)
-library(ChestVolume)
+# Step 1: Process the marker data and convert from mm to cm
+processed_data <- process_marker_data(sample_data, convert_to_cm = TRUE)
 
-test_check("ChestVolume")
+# Step 2: Adjust the marker positions by moving them 1 cm toward the chest center
+adjusted_data <- adj_position(processed_data, distance = 1)
+
+# Step 3: Define the chest segments (example with one segment)
+segments <- list(
+  upper_left = c("M01", "M02", "M04", "M05","M07", "M08","M10", "M11")
+)
+
+# Step 4: Calculate the chest segment volumes
+volumes <- calculate_convex_hull_volume(adjusted_data, segments)
+
+# Step 5: Visualize the chest expansion in 3D
+plot_chest_3d(adjusted_data, segments)
+
+# Step 6: Plot the chest volume changes over time
+plot_volume_change_by_segment(volumes, segment_names = c("upper_left", "upper_right"))

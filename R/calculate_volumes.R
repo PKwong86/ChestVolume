@@ -24,7 +24,7 @@
 #' @import dplyr
 #' @import geometry
 #' @export
-calculate_segment_volumes <- function(data, segments) {
+calculate_volumes <- function(data, segments) {
   # Load necessary packages
   library(dplyr)
 
