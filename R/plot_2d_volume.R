@@ -9,21 +9,19 @@
 #' @return A ggplot object showing volume changes by segment over time.
 #' @import ggplot2
 #' @import tidyr
+#' @export
 #' @examples
 #' # Example usage with random volume data
 #' set.seed(123)
-#' time_frames <- 1:100
 #' volume_data <- data.frame(
-#'   frame = time_frames,
-#'   UL = runif(100, min = 100, max = 150),
-#'   UR = runif(100, min = 120, max = 160),
-#'   LL = runif(100, min = 90, max = 140),
-#'   LR = runif(100, min = 110, max = 170)
+#'   Timeframe = 1:100,
+#'   Volume = runif(100, min = 100, max = 150),
+#'   Segment = 'UL'
 #' )
-#' segment_names <- c("UL", "UR", "LL", "LR")
-#' plot_volume_change_by_segment(volume_data, segment_names)
 #'
-plot_2d_volume <- function(volume_data, segment_names, title = "Volume Change by Segment") {
+#' plot_2d_volume(volume_data, segment_names = 'Segment')
+#'
+plot_2d_volume <- function(volume_data, segment_names = 'Segment', title = "Volume Change by Segment") {
 
   # Ensure 'frame' column is present
   if (!"Timeframe" %in% names(volume_data)) {
@@ -37,7 +35,7 @@ plot_2d_volume <- function(volume_data, segment_names, title = "Volume Change by
 
   # Create the ggplot
   ggplot(volume_data, aes(x = Timeframe, y = Volume, color = Segment)) +
-    geom_line(size = 1) +
+    geom_line(linewidth = 1) +
     labs(x = "Timeframe", y = "Volume") +
     theme_minimal() +
     theme(

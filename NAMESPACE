@@ -2,6 +2,7 @@
 
 export(adj_position)
 export(calculate_segment_volumes)
+export(plot_2d_volume)
 export(plot_chest_3d)
 export(process_marker_data)
 export(read_segment_definitions)

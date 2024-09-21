@@ -4,11 +4,13 @@
 \alias{process_marker_data}
 \title{Process and Sort Marker Data for All Time Frames}
 \usage{
-process_marker_data(data)
+process_marker_data(data, convert_to_cm = TRUE)
 }
 \arguments{
 \item{data}{A data frame containing marker coordinate data for all time frames.
 Columns should be named in the format 'MXX X', 'MXX Y', 'MXX Z' where 'MXX' is the marker name.}
+
+\item{convert_to_cm}{Logical, if TRUE, divides X, Y, Z coordinates by 10 to convert to centimeters (from millimeters).}
 }
 \value{
 A data frame with columns 'Timeframe', 'Marker', 'X', 'Y', 'Z', sorted by Timeframe and Marker.
@@ -20,11 +22,11 @@ Adds a Timeframe column corresponding to each row (time frame) in the original d
 }
 \details{
 The function reshapes the wide-format data into a long format suitable for analysis,
-adding a Timeframe column that corresponds to each time frame.
+adding a Timeframe column that corresponds to each time frame. Optionally converts units to centimeters.
 }
 \examples{
-# Assume 'raw_data' is your input data frame
-processed_data <- process_marker_data(raw_data)
+data(sample_data)
+processed_data <- process_marker_data(sample_data, convert_to_cm = TRUE)
 head(processed_data)
 
 }
