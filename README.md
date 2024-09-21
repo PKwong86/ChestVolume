@@ -46,7 +46,7 @@ segments <- list(
 )
 
 # Step 4: Calculate the chest segment volumes
-volumes <- calculate_convex_hull_volume(adjusted_data, segments)
+volumes <- calculate_volume(adjusted_data, segments)
 
 # Step 5: Visualize the chest expansion in 3D
 plot_chest_3d(adjusted_data, segments)
