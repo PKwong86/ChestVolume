@@ -5,7 +5,7 @@ Authors@R:
     person("Wai Hang", "Kwong", , "wai-hang.kwong@polyu.edu.hk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1834-5715"))
 Description: is an R package designed for analyzing chest expansion using 3D marker coordinate.
-License: use_mit_license()
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

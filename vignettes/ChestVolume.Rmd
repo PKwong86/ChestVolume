@@ -25,10 +25,8 @@ ChestVolume is an R package designed to process and analyze 3D marker data colle
 ## Installation
 To install ChestVolume from GitHub, use the following commands:
 
-```{r message=FALSE, warning=FALSE}
-if (!requireNamespace("devtools", quietly = TRUE)) {
-  install.packages("devtools")
-}
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+library(devtools)
 devtools::install_github("PKwong86/ChestVolume")
 
 ```
@@ -39,7 +37,7 @@ The input data should be in the form of a data frame where each marker has three
 
 ## Example Input Data
 Each row in the data corresponds to a specific time point, and the columns represent the X, Y, and Z coordinates of markers placed on the chest.
-```{r}
+```{r warning=FALSE}
 library(ChestVolume)
 knitr::kable(head(sample_data[, 1:6]), "pipe")
 ```
@@ -82,13 +80,13 @@ Define the chest segments based on marker names and calculate the convex hull vo
 segments <- list(
   upper_left = c("M01", "M02", "M04", "M05","M07", "M08","M10", "M11")
 )
-calculate_volumns(adjusted_data, segments)
+volumes<- calculate_volumes(adjusted_data, segments)
 head(volumes)
 ```
 
 # Step 4: Visualize Chest Expansion in 3D
 Use the plot_chest_3d() function to create a 3D plot of the chest markers and their convex hull volumes.
-```{r}
+```{r eval=FALSE, warning=FALSE, include=FALSE}
 plot_chest_3d(adjusted_data, segments, selected_segment = 'upper_left')
 ```
 
@@ -101,13 +99,7 @@ plot_2d_volume(volumes, 'Segment')
 ## Additional Features
 Custom Segment Definitions
 You can define custom chest segments by uploading an Excel file that specifies which markers belong to which segment. Use the read_segment_definitions() function to read the segment definitions from the file.
-```{r}
-# Define custom segments by uploading an Excel file
-segment_definitions <- read_segment_definitions("path_to_excel_file.xlsx")
 
-# Calculate volumes using the custom segments
-custom_volumes <- calculate_volumes(adjusted_data, segment_definitions)
-```
 
 ## Shiny App
 For users who prefer a graphical user interface, ChestVolume includes a Shiny app. This app allows you to interact with the data visually, upload datasets, define segments, and calculate and visualize chest expansion.
