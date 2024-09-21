@@ -13,7 +13,7 @@ plot_2d_volume(
 \arguments{
 \item{volume_data}{A data frame with volume measurements, one column per segment, and a "frame" column for time.}
 
-\item{segment_names}{A vector of names for each segment (must match the column names in volume_data).}
+\item{segment_names}{Column that contain name of segment to plot}
 
 \item{title}{Optional plot title.}
 }

@@ -31,7 +31,7 @@ segments <- list(
 data('sample_data')
 processed_data <- process_marker_data(sample_data)
 adjusted_data <- adj_position(processed_data)
-volumes_df <- calculate_segment_volumes(adjusted_data, segments)
+volumes_df <- calculate_volumes(adjusted_data, segments)
 head(volumes_df)
 
 }
