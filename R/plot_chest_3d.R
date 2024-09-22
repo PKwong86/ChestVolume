@@ -34,9 +34,7 @@
 #' @export
 plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
                           point_size = 5, highlight_color = 'red', marker_color = 'blue') {
-  # Load necessary packages
-  library(plotly)
-  library(geometry)
+
 
   # Validate inputs
   if (!selected_segment %in% names(segments)) {
@@ -63,7 +61,7 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
   data_time$Size[data_time$Marker %in% selected_markers] <- point_size * 1.5  # Make highlighted markers larger
 
   # Create 3D scatter plot
-  plot <- plot_ly(data_time, x = ~X, y = ~Y, z = ~Z, type = 'scatter3d', mode = 'markers',
+  plot <- plotly::plot_ly(data_time, x = ~X, y = ~Y, z = ~Z, type = 'scatter3d', mode = 'markers',
                   marker = list(size = ~Size, color = ~Color),
                   text = ~paste('Marker:', Marker),
                   hoverinfo = 'text')
@@ -74,7 +72,7 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
 
   if (nrow(coords) >= 4) {
     # Compute the convex hull
-    hull <- convhulln(coords, output.options = TRUE)
+    hull <- geometry::convhulln(coords, output.options = TRUE)
 
     # Extract vertices and simplices
     vertices <- coords
@@ -85,7 +83,7 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
 
     # Add convex hull mesh to the plot
     plot <- plot %>%
-      add_trace(
+      plotly::add_trace(
         x = vertices[, 1],
         y = vertices[, 2],
         z = vertices[, 3],
@@ -104,7 +102,7 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
 
   # Add layout settings
   plot <- plot %>%
-    layout(
+    plotly::layout(
       scene = list(
         xaxis = list(title = 'X'),
         yaxis = list(title = 'Y'),
