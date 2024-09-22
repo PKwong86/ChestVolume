@@ -20,20 +20,18 @@
 #' @import readxl
 #' @export
 read_segment_definitions <- function(filepath) {
-  # Load necessary package
-  library(readxl)
-  
+
   # Read the Excel file
-  segment_data <- read_excel(filepath, col_names = FALSE)
-  
+  segment_data <- readxl::read_excel(filepath, col_names = FALSE)
+
   # Ensure there is at least one column
   if (ncol(segment_data) < 2) {
     stop("The Excel file must have at least two columns: one for segment names and at least one for marker names.")
   }
-  
+
   # Initialize the segments list
   segments <- list()
-  
+
   # Loop over each row to extract segment names and marker names
   for (i in 1:nrow(segment_data)) {
     segment_name <- as.character(segment_data[i, 1])
@@ -43,6 +41,6 @@ read_segment_definitions <- function(filepath) {
     # Add to the segments list
     segments[[segment_name]] <- marker_names
   }
-  
+
   return(segments)
 }
