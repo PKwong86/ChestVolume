@@ -62,6 +62,7 @@ plot_2d_volume(volumes, 'Segment')
 For users who prefer a graphical interface, the ChestVolume Shiny app allows you to interact with the data without programming knowledge.
 
 Access the Shiny app online: https://waihangkwong.shinyapps.io/Lung_volumn/
+Source Code: The source code for the Shiny app is available at https://github.com/PKwong86/Chestvolume_shiny
 
 ## License
 This package is released under the MIT License. Feel free to use, modify, and distribute it.
