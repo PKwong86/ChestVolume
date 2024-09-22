@@ -26,7 +26,7 @@ adding a Timeframe column that corresponds to each time frame. Optionally conver
 }
 \examples{
 data(sample_data)
-processed_data <- process_marker_data(sample_data, convert_to_cm = TRUE)
+processed_data <- process_marker_data(head(sample_data), convert_to_cm = TRUE)
 head(processed_data)
 
 }

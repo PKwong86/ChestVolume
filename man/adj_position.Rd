@@ -23,9 +23,8 @@ The function calculates the average center position of all markers within each t
 by the specified distance along the line connecting the marker to the center.
 }
 \examples{
-# Assume 'processed_data' is the data frame from process_marker_data
 data("sample_data")
-processed_data <- process_marker_data(sample_data)
+processed_data <- process_marker_data(head(sample_data))
 adjusted_data <- adj_position(processed_data, distance = 1)
 head(adjusted_data)
 

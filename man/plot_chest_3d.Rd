@@ -42,15 +42,13 @@ The function plots all markers at the specified timeframe, highlighting the mark
 and overlaying the convex hull mesh of the selected segment. The plot is interactive, allowing for rotation and zooming.
 }
 \examples{
-data("sample_data")
-df<-process_marker_data(sample_data)
+# Example input data (replace with your actual data)
+data(sample_data)
+df<-process_marker_data(head(sample_data))
 df_a <- adj_position(df)
 # Define segments
 segments <- list(
-  UL = c("M01", "M02", "M03", "M04"),
-  UR = c("M05", "M06", "M07", "M08"),
-  LL = c("M09", "M10", "M11", "M12"),
-  LR = c("M13", "M14", "M15", "M16")
+  UL = c("M01", "M02", "M03", "M04")
 )
 # Plot the 'UL' segment at timeframe 1
 plot <- plot_chest_3d(df_a, segments, selected_segment = "UL", timeframe = 1)
