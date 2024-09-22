@@ -25,8 +25,6 @@
 #' @import geometry
 #' @export
 calculate_volumes <- function(data, segments) {
-  # Load necessary packages
-  library(dplyr)
 
   # Initialize a list to store volume data frames
   volume_list <- list()
@@ -37,12 +35,12 @@ calculate_volumes <- function(data, segments) {
 
     # Filter data for the markers in this segment
     segment_data <- data %>%
-      filter(Marker %in% segment_markers)
+      dplyr::filter(Marker %in% segment_markers)
 
     # Calculate volumes for each timeframe
     segment_volumes <- segment_data %>%
-      group_by(Timeframe) %>%
-      do({
+      dplyr::group_by(Timeframe) %>%
+      dplyr::do({
         df <- .
         coords <- as.matrix(df[, c("X", "Y", "Z")])
 
@@ -56,22 +54,22 @@ calculate_volumes <- function(data, segments) {
 
         data.frame(Volume = volume)
       }) %>%
-      ungroup() %>%
-      mutate(Segment = segment_name)
+      dplyr::ungroup() %>%
+      dplyr::mutate(Segment = segment_name)
 
     # Append to the list
     volume_list[[segment_name]] <- segment_volumes
   }
 
   # Combine all volume data frames
-  volumes_df <- bind_rows(volume_list)
+  volumes_df <- dplyr::bind_rows(volume_list)
 
   # Reorder columns
   volumes_df <- volumes_df[, c("Timeframe", "Segment", "Volume")]
 
   # Arrange data
   volumes_df <- volumes_df %>%
-    arrange(Timeframe, Segment)
+    dplyr::arrange(Timeframe, Segment)
 
   return(volumes_df)
 }

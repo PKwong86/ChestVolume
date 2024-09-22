@@ -1,16 +1,17 @@
 Package: ChestVolume
-Title: Estimate the chest volumn with markers data
+Title: Estimate The Chest Volumn With Markers Data
 Version: 1.0.0
 Authors@R: 
-    person("Wai Hang", "Kwong", , "wai-hang.kwong@polyu.edu.hk", role = c("aut", "cre"),
+    person("Wai-Hang", "Kwong", email = "wai-hang.kwong@polyu.edu.hk", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-1834-5715"))
-Description: is an R package designed for analyzing chest expansion using 3D marker coordinate.
+Maintainer: Wai-Hang Kwong <wai-hang.kwong@polyu.edu.hk>
+Description: Provides tools to process and analyze chest expansion using 3D marker data from motion capture systems. Includes functions for data processing, marker position adjustment, volume calculation using convex hulls, and visualization in 2D and 3D. Barber, et al. (1996) <doi:10.1145/235815.235821>. TAMIYA, Hiroyuki, et al. (2021) <doi:10.1038/s41598-021-01033-8>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
-    R (>= 4.00)
+    R (>= 4.0.0)
 Imports:
     readxl,
     dplyr,

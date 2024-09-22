@@ -19,13 +19,11 @@
 #' @import dplyr
 #' @export
 adj_position <- function(data, distance = 1) {
-  # Load necessary package
-  library(dplyr)
 
   # Adjust markers for each timeframe
   adjusted_data <- data %>%
-    group_by(Timeframe) %>%
-    do({
+    dplyr::group_by(Timeframe) %>%
+    dplyr::do({
       markers_df <- .
       # Calculate the center for this timeframe
       center_coords <- colMeans(markers_df[, c("X", "Y", "Z")], na.rm = TRUE)
@@ -50,7 +48,7 @@ adj_position <- function(data, distance = 1) {
       markers_df[, c("X", "Y", "Z")] <- adjusted_coords
       markers_df
     }) %>%
-    ungroup()
+    dplyr::ungroup()
 
   return(adjusted_data)
 }

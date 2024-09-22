@@ -18,15 +18,14 @@
 #' @import tidyr
 #' @export
 process_marker_data <- function(data, convert_to_cm = TRUE) {
-  # Load necessary package
-  library(tidyr)
+
 
   # Add Timeframe column
   data$Timeframe <- 1:nrow(data)
 
   # Gather the data into long format
   long_data <- data %>%
-    pivot_longer(
+    tidyr::pivot_longer(
       cols = -Timeframe,
       names_to = "Variable",
       values_to = "Value"
@@ -34,11 +33,11 @@ process_marker_data <- function(data, convert_to_cm = TRUE) {
 
   # Separate 'Variable' into 'Marker' and 'Axis'
   long_data <- long_data %>%
-    separate(Variable, into = c("Marker", "Axis"), sep = " ")
+    tidyr::separate(Variable, into = c("Marker", "Axis"), sep = " ")
 
   # Pivot wider to have 'X', 'Y', 'Z' as columns
   processed_data <- long_data %>%
-    pivot_wider(
+    tidyr::pivot_wider(
       names_from = Axis,
       values_from = Value
     )

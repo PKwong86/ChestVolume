@@ -29,7 +29,7 @@
 #' plot <- plot_chest_3d(df_a, segments, selected_segment = "UL", timeframe = 1)
 #' # Display the plot
 #' plot
-#' @import plotly
+#' @importFrom plotly plot_ly add_trace layout
 #' @import geometry
 #' @export
 plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
@@ -47,7 +47,7 @@ plot_chest_3d <- function(data, segments, selected_segment, timeframe = NULL,
   }
 
   # Filter data for the specified timeframe
-  data_time <- subset(data, Timeframe == timeframe)
+  data_time <- data %>% subset(Timeframe == timeframe)
 
   # Identify markers in the selected segment
   selected_markers <- segments[[selected_segment]]

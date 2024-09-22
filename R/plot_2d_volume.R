@@ -30,11 +30,11 @@ plot_2d_volume <- function(volume_data, segment_names = 'Segment', title = "Volu
 
 
   # Create the ggplot
-  ggplot(volume_data, aes(x = Timeframe, y = Volume, color = Segment)) +
-    geom_line(linewidth = 1) +
-    labs(x = "Timeframe", y = "Volume") +
-    theme_minimal() +
-    theme(
+  ggplot2::ggplot(volume_data, aes(x = Timeframe, y = Volume, color = Segment)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::labs(x = "Timeframe", y = "Volume") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
       plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
       axis.title = element_text(size = 12),
       axis.text = element_text(size = 10)
