@@ -26,8 +26,8 @@ The Excel file should have a specific format:
 Missing marker entries can be left blank or filled with \code{NA}.
 }
 \examples{
-\dontrun{
-# Assume 'segments.xlsx' is your Excel file with segment definitions
-segments <- read_segment_definitions("segments.xlsx")
-}
+# 'segment_def.xlsx' is the Excel file with segment definitions
+path <- system.file("extdata", "segment_def.xlsx", package="ChestVolume")
+segments <- read_segment_definitions(path)
+head(segments)
 }

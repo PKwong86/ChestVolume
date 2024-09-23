@@ -25,11 +25,10 @@ ChestVolume is an R package designed to process and analyze 3D marker data colle
 ## Installation
 To install ChestVolume from GitHub, use the following commands:
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 library(devtools)
+
 devtools::install_github("PKwong86/ChestVolume")
 
-```
 This will install the package along with its dependencies.
 
 ## Data Structure and Input Format
@@ -99,6 +98,10 @@ plot_2d_volume(volumes, 'Segment')
 ## Additional Features
 Custom Segment Definitions
 You can define custom chest segments by uploading an Excel file that specifies which markers belong to which segment. Use the read_segment_definitions() function to read the segment definitions from the file.
+```{r message=FALSE, warning=FALSE}
+segments <- read_segment_definitions(system.file("extdata", "segment_def.xlsx", package="ChestVolume"))
+head(segments)
+```
 
 
 ## Shiny App
