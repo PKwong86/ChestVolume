@@ -1,9 +1,9 @@
 <!-- badges: start -->
 
 
-[![Downloads](https://cranlogs.r-pkg.org/badges/Visualize.CRAN.Downloads)](https://cran.r-project.org/package=ChestVolume.CRAN.Downloads)
+[![Downloads](https://cranlogs.r-pkg.org/badges/ChestVolume)](https://cran.r-project.org/package=ChestVolume)
 <!--
-[![CRAN checks](https://cranchecks.info/badges/worst/Visualize.CRAN.Downloads)](https://cranchecks.info/pkgs/Visualize.CRAN.Downloads)
+[![CRAN checks](https://cranchecks.info/badges/worst/ChestVolume)](https://cranchecks.info/pkgs/ChestVolume)
 -->
 <!-- badges: end -->
 
