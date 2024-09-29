@@ -1,7 +1,8 @@
-<!-- badges: start -->
 <p>
    <img src="relativePath/ChestVolume.png" width="220" height="220" /> 
 </p>
+<!-- badges: start -->
+
 [![Downloads](https://cranlogs.r-pkg.org/badges/ChestVolume)](https://cran.r-project.org/package=ChestVolume)
 <!--
 [![CRAN checks](https://cranchecks.info/badges/worst/ChestVolume)](https://cranchecks.info/pkgs/ChestVolume)
