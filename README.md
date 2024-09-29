@@ -1,5 +1,5 @@
 <p>
-   <img src="relativePath/ChestVolume.png" width="220" height="220" /> 
+   <img src="inst/extdata/ChestVolume.png" width="220" height="220" /> 
 </p>
 <!-- badges: start -->
 
