@@ -4,6 +4,8 @@
 <!--
 [![CRAN checks](https://cranchecks.info/badges/worst/ChestVolume)](https://cranchecks.info/pkgs/ChestVolume)
 -->
+[![Total
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/ChestVolume)](https://cran.r-project.org/package=ChestVolume)
 <!-- badges: end -->
 
 # ChestVolume: An R Package for Analyzing Chest Expansion Using 3D Coordinate Data
