@@ -1,3 +1,6 @@
+<p>
+   <img src="inst/extdata/ChestVolume.png" width="220" height="220" /> 
+</p>
 <!-- badges: start -->
 
 [![Downloads](https://cranlogs.r-pkg.org/badges/ChestVolume)](https://cran.r-project.org/package=ChestVolume)
