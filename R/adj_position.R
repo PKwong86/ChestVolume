@@ -18,20 +18,20 @@
 #'
 #' @examples
 #' data("sample_data")
-#' processed_data <- process_marker_data(head(sample_data))
+#' reformat_data <- reformat_marker_data(head(sample_data))
 #'
 #' # Using the average centroid (default)
-#' adjusted_data_avg <- adj_position(processed_data, distance = 1, centroid = "average")
+#' adjusted_data_avg <- adj_position(reformat_data, distance = 1, centroid = "average")
 #' head(adjusted_data_avg)
 #'
 #' # Using the convex hull centroid
-#' adjusted_data_ch <- adj_position(processed_data, distance = 1, centroid = "convex hull")
+#' adjusted_data_ch <- adj_position(reformat_data, distance = 1, centroid = "convex hull")
 #'
 #' @import dplyr
 #' @import geometry
 #' @export
 
-adj_position1 <- function(data, distance = 1, centroid = 'Average') {
+adj_position <- function(data, distance = 1, centroid = 'Average') {
   convex_hull_centroid <- function(points) {
     # Ensure there are at least 4 points to form a convex hull
     if (nrow(points) < 4) {
@@ -170,4 +170,4 @@ adj_position1 <- function(data, distance = 1, centroid = 'Average') {
   colnames(adjusted_data) <- c('Timeframe','Marker','X','Y','Z')
   return(adjusted_data)
 }
-adj_position1(markers_df, centroid = 'convex hull')
+
