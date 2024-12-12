@@ -28,7 +28,11 @@ This tool is particularly useful for respiratory health research, enabling detai
 - **Shiny App**: A graphical interface to allow non-programmers to interact with the data and analyses.
 
 ## Installation
+Install the released version of remotes from CRAN:
 
+```r
+install.packages("ChestVolume")
+```
 To install **ChestVolume** from GitHub, use the following commands:
 
 ```r
