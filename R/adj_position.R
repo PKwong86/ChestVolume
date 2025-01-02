@@ -39,7 +39,7 @@ adj_position <- function(data, distance = 1, centroid = 'Average') {
     }
 
     # Compute the convex hull indices
-    hull <- convhulln(points, options = "FA")
+    hull <- geometry::convhulln(points, options = "FA")
 
     # Extract the triangular faces of the convex hull
     triangles <- hull$hull
@@ -86,23 +86,23 @@ adj_position <- function(data, distance = 1, centroid = 'Average') {
       stop("The dataframe must contain columns: Timeframe, X, Y, Z")
     }
 
-    # Group by Timeframe and calculate the centroid for each group
     centroids <- data %>%
-      group_by(Timeframe) %>%
-      summarise(
-        # Compute the centroid as a vector (X, Y, Z)
-        centroid = list(convex_hull_centroid(cbind(X, Y, Z))),
+      dplyr::group_by(.data$Timeframe) %>%
+      dplyr::summarise(
+        # Use .data$X, etc. here
+        centroid = list(convex_hull_centroid(cbind(.data$X, .data$Y, .data$Z))),
         .groups = "drop"
       ) %>%
-      # Expand the list column into separate X, Y, Z columns
-      rowwise() %>%
-      mutate(
-        X = centroid[[1]],
-        Y = centroid[[2]],
-        Z = centroid[[3]]
+      dplyr::rowwise() %>%
+      dplyr::mutate(
+        # Here, since we are creating new columns, it's fine to name them X, Y, Z
+        # but to refer to the old columns in the same pipeline, you would use .data$...
+        X = .data$centroid[[1]],
+        Y = .data$centroid[[2]],
+        Z = .data$centroid[[3]]
       ) %>%
-      ungroup() %>%  # Remove rowwise grouping
-      select(Timeframe, X, Y, Z)  # Keep only relevant columns
+      dplyr::ungroup() %>%
+      dplyr::select(.data$Timeframe, .data$X, .data$Y, .data$Z)
 
     return(centroids)
   }
